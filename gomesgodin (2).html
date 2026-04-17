@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gomes Godin | Monetize Idle Candidates</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #111111;
+    --navy-mid: #222222;
+    --gold: #333333;
+    --gold-light: #555555;
+    --cream: #f7f7f7;
+    --gray-light: #f2f2f2;
+    --gray-mid: #e0e0e0;
+    --gray-text: #666666;
+    --text: #111111;
+    --white: #ffffff;
+    --radius: 10px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.65;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 64px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  .nav-logo {
+    color: var(--white);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold-light); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--white);
+    border: none; cursor: pointer;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--white); color: var(--navy); }
+
+  /* HERO */
+  .hero {
+    background: #111111;
+    color: var(--white);
+    padding: 90px 5% 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.18;
+    max-width: 780px;
+    margin: 0 auto 20px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 span { color: #c8903a; }
+  .hero p {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 540px;
+    margin: 0 auto 36px;
+  }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: #c8903a;
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #e0a84a; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.5);
+    padding: 13px 28px;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+
+  /* PROBLEM */
+  .section { padding: 72px 5%; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .section h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--navy);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--gray-text);
+    max-width: 580px;
+    margin-bottom: 48px;
+  }
+
+  /* STATS */
+  .stats-bg { background: var(--navy); }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+  }
+  .stat-card {
+    padding: 40px 32px;
+    text-align: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .stat-num {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+  }
+
+  /* STEPS */
+  .steps-bg { background: var(--cream); }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 24px;
+    margin-top: 8px;
+  }
+  .step-card {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .step-num {
+    width: 38px; height: 38px;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 800;
+    margin-bottom: 16px;
+  }
+  .step-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .step-card p { font-size: 0.9rem; color: var(--gray-text); line-height: 1.55; }
+  .step-highlight {
+    display: inline-block;
+    background: #eeeeee;
+    color: #333333;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+
+  /* WHY */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .why-card {
+    background: var(--gray-light);
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    border: 1px solid var(--gray-mid);
+  }
+  .why-icon {
+    width: 40px; height: 40px;
+    background: var(--navy);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    font-size: 1.1rem;
+  }
+  .why-card h3 { font-size: 0.98rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .why-card p { font-size: 0.88rem; color: var(--gray-text); line-height: 1.55; }
+
+  /* PITCH / CTA SECTION */
+  .pitch-bg { background: var(--cream); }
+  .pitch-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 700px) { .pitch-cols { grid-template-columns: 1fr; } }
+  .pitch-col { }
+  .list-no, .list-yes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .list-no li, .list-yes li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+  .badge-no, .badge-yes {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 800;
+    margin-top: 1px;
+  }
+  .badge-no { background: #fde8e8; color: #c0392b; }
+  .badge-yes { background: #e2f4e8; color: #1e7e34; }
+  .col-heading {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--gray-mid);
+  }
+  .col-heading.no { color: #c0392b; border-color: #fbd0d0; }
+  .col-heading.yes { color: #1e7e34; border-color: #c2e8ca; }
+
+  /* CONTACT */
+  .contact-bg { background: var(--navy); }
+  .contact-wrap {
+    max-width: 680px; margin: 0 auto;
+    text-align: center;
+  }
+  .contact-wrap .section-tag { color: rgba(255,255,255,0.6); }
+  .contact-wrap h2 { color: var(--white); }
+  .contact-wrap p { color: rgba(255,255,255,0.7); margin-bottom: 40px; }
+  .contact-form {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 36px 32px;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .form-group input, .form-group textarea {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 7px;
+    padding: 11px 14px;
+    color: var(--white);
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .form-group input:focus, .form-group textarea:focus { border-color: rgba(255,255,255,0.6); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    width: 100%; padding: 14px;
+    background: var(--gold);
+    color: var(--white);
+    border: none; border-radius: 7px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    margin-top: 6px;
+    transition: background 0.2s, transform 0.15s;
+    font-family: inherit;
+  }
+  .form-submit:hover { background: #333; transform: translateY(-1px); }
+  .form-success {
+    display: none;
+    color: #7ee8a2;
+    font-size: 0.95rem;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(126,232,162,0.1);
+    border-radius: 7px;
+    border: 1px solid rgba(126,232,162,0.2);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #080f1a;
+    color: rgba(255,255,255,0.55);
+    padding: 36px 5%;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+    gap: 20px;
+  }
+  .footer-logo { color: var(--white); font-weight: 700; font-size: 1.1rem; }
+  .footer-logo span { color: rgba(255,255,255,0.55); }
+  .footer-info { font-size: 0.85rem; line-height: 1.8; }
+  .footer-info a { color: rgba(255,255,255,0.8); text-decoration: none; }
+  .footer-info a:hover { text-decoration: underline; }
+  .footer-social a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.75rem; font-weight: 700;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .footer-social a:hover { border-color: var(--white); color: var(--white); }
+  .footer-copy { width: 100%; text-align: center; font-size: 0.8rem; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07); margin-top: 8px; }
+
+  /* Smooth scroll */
+  html { scroll-behavior: smooth; }
+
+  /* Button press feedback */
+  .btn-primary, .btn-ghost, .nav-cta { position: relative; overflow: hidden; }
+  .btn-primary::after, .btn-ghost::after, .nav-cta::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.18);
+    opacity: 0; border-radius: inherit;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:active::after, .btn-ghost:active::after, .nav-cta:active::after { opacity: 1; }
+  .btn-primary:active, .btn-ghost:active, .nav-cta:active { transform: scale(0.96) translateY(1px); }
+
+  @keyframes section-flash {
+    0%   { outline: 3px solid rgba(200,144,58,0); }
+    25%  { outline: 3px solid rgba(200,144,58,0.55); }
+    100% { outline: 3px solid rgba(200,144,58,0); }
+  }
+  .section-flash { animation: section-flash 1.1s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Gomes<span>Godin</span></a>
+  <a href="#contact" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Placement Engine for Recruiters</div>
+  <h1>Turn Your <span>Idle Candidates</span> Into Cash — Without Chasing Clients.</h1>
+  <p>You've got great talent. We've got great clients. Let's partner and get your candidates placed fast.</p>
+  <div class="hero-btns">
+    <a href="#contact" class="btn-primary">Partner With Us</a>
+    <a href="#how-it-works" class="btn-ghost">See How It Works</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section stats-bg">
+  <div class="section-inner">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">60%</div>
+        <div class="stat-label">of candidates sourced by recruiters never get placed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$2B+</div>
+        <div class="stat-label">in fees lost every year on idle candidates</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$10K</div>
+        <div class="stat-label">average net payout to recruiters per successful placement</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">50/50</div>
+        <div class="stat-label">placement fee split — simple, transparent, fast</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-tag">The Problem</div>
+    <h2>You're a great recruiter but… not every candidate has a role lined up.</h2>
+    <p class="section-lead">If you're sitting on top-tier professionals with no current openings, you're leaving money on the table — and so are they. At Gomes Godin, we help independent recruiters and boutique agencies monetize qualified candidates they're not currently placing — no cold outreach, no job scraping, no chasing clients.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section steps-bg" id="how-it-works">
+  <div class="section-inner">
+    <div class="section-tag">The Process</div>
+    <h2>Here's how it works</h2>
+    <p class="section-lead">Four simple steps from submission to split — no exclusivity, no hidden fees, no complicated agreements.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Share a vetted candidate</h3>
+        <p>Any professional role. No exclusivity required. Submit and we take it from there.</p>
+        <span class="step-highlight">No fees to join</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>We build their pitch &amp; promote them</h3>
+        <p>We package your candidate — polished resume, assessments, references — and promote them to startups, growth-stage companies, and founders actively hiring.</p>
+        <span class="step-highlight">We do all the heavy lifting</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>We book qualified meetings for you</h3>
+        <p>You get warm introductions to decision-makers who are already interested. You take the call and pitch your candidate.</p>
+        <span class="step-highlight">No cold outreach needed</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>We split the placement fee 50/50</h3>
+        <p>You close the deal. We split the fee right down the middle. Simple, transparent, fast.</p>
+        <span class="step-highlight">Avg. $10K per placement</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY WORK WITH US -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-tag">Why Us</div>
+    <h2>Why work with Gomes Godin</h2>
+    <p class="section-lead">We built this for recruiters who are great at finding talent but tired of chasing clients. Here's what you get when you partner with us.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <h3>No exclusivity required</h3>
+        <p>Work with us when you want, on your terms. Continue using your existing clients and channels.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📣</div>
+        <h3>We handle all biz dev</h3>
+        <p>No more chasing founders or waiting on job orders. We handle all client acquisition and outreach.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💸</div>
+        <h3>Fast, transparent payments</h3>
+        <p>You get 50% of every placement fee. Always. No surprises, no complex tier structures.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">👥</div>
+        <h3>Your talent stays yours</h3>
+        <p>Every candidate you submit is tagged to you. No poaching, no confusion, no cross-submissions.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚡</div>
+        <h3>Hire 47% faster</h3>
+        <p>Our repackaged talent pool helps companies hire significantly faster and at 35% lower cost than traditional staffing.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎯</div>
+        <h3>All professional roles welcome</h3>
+        <p>Marketing, operations, customer success, product, sales — if you've got vetted talent, we can place them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU DON'T / DO GET -->
+<section class="section pitch-bg">
+  <div class="section-inner">
+    <div class="section-tag">No Risk</div>
+    <h2>Try it risk-free</h2>
+    <p class="section-lead">We've stripped away everything that slows recruiters down. Here's the before and after.</p>
+    <div class="pitch-cols">
+      <div class="pitch-col">
+        <div class="col-heading no">What you don't have to do</div>
+        <ul class="list-no">
+          <li><span class="badge-no">✕</span> Cold outreach to clients</li>
+          <li><span class="badge-no">✕</span> Job scraping or sourcing</li>
+          <li><span class="badge-no">✕</span> Waiting for job orders</li>
+          <li><span class="badge-no">✕</span> Complicated agreements</li>
+          <li><span class="badge-no">✕</span> Paying to partner with us</li>
+        </ul>
+      </div>
+      <div class="pitch-col">
+        <div class="col-heading yes">What you get instead</div>
+        <ul class="list-yes">
+          <li><span class="badge-yes">✓</span> Revenue from candidates in your ATS</li>
+          <li><span class="badge-yes">✓</span> Earn without more recruiting work</li>
+          <li><span class="badge-yes">✓</span> All front-end sales handled for you</li>
+          <li><span class="badge-yes">✓</span> Warm introductions to decision-makers</li>
+          <li><span class="badge-yes">✓</span> 50% of every placement fee</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact-bg" id="contact">
+  <div class="section-inner">
+    <div class="contact-wrap">
+      <div class="section-tag">Get Started</div>
+      <h2>Ready to earn from your idle candidates?</h2>
+      <p>Reach out to see how fast we can get your talent in front of hiring managers.</p>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="f-name" placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="f-phone" placeholder="(555) 000-0000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="f-email" placeholder="you@company.com">
+          </div>
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" id="f-company" placeholder="Your firm or agency">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Comments</label>
+          <textarea id="f-comments" placeholder="Tell us about the candidates you're sitting on..."></textarea>
+        </div>
+        <button class="form-submit" id="form-btn" onclick="handleSubmit()">Send Message</button>
+        <div class="form-success" id="form-success">Thanks for reaching out! We'll get back to you as soon as possible.</div>
+        <div id="form-error" style="display:none; color:#e57373; font-size:0.95rem; margin-top:12px; padding:12px; background:rgba(229,115,115,0.1); border-radius:7px; border:1px solid rgba(229,115,115,0.2);">Something went wrong. Please try again or email us at <a href="mailto:tgodin@gomesgodin.com" style="color:#e57373;">tgodin@gomesgodin.com</a>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Gomes<span>Godin</span></div>
+      <div style="margin-top:4px; font-size:0.8rem;">Monetize Idle Candidates</div>
+    </div>
+    <div class="footer-info">
+      <div>📍 Stoughton, MA</div>
+      <div>📞 <a href="tel:7817740647">781-774-0647</a></div>
+      <div>✉️ <a href="mailto:tgodin@gomesgodin.com">tgodin@gomesgodin.com</a></div>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.linkedin.com/company/gomesgodin/?viewAsMember=true" target="_blank" rel="noopener" title="LinkedIn">in</a>
+    </div>
+    <div class="footer-copy">© 2025 Gomes Godin. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+async function handleSubmit() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if (!name || !email) {
+    alert('Please fill in your name and email to continue.');
+    return;
+  }
+  const btn = document.getElementById('form-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  document.getElementById('form-error').style.display = 'none';
+  document.getElementById('form-success').style.display = 'none';
+
+  try {
+    const res = await fetch('https://formspree.io/f/mwvalowe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name,
+        phone: document.getElementById('f-phone').value.trim(),
+        email,
+        company: document.getElementById('f-company').value.trim(),
+        message: document.getElementById('f-comments').value.trim()
+      })
+    });
+    const json = await res.json();
+    if (res.ok && !json.errors) {
+      document.getElementById('form-success').style.display = 'block';
+      ['f-name','f-phone','f-email','f-company','f-comments'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      btn.textContent = 'Sent!';
+    } else {
+      throw new Error(json.errors ? json.errors.map(e => e.message).join(', ') : 'Server error');
+    }
+  } catch (err) {
+    console.error('Submit error:', err);
+    document.getElementById('form-error').style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+  }
+}
+
+function scrollToSection(targetId) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  const navHeight = document.querySelector('nav').offsetHeight;
+  const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+  window.scrollTo({ top, behavior: 'smooth' });
+  target.classList.remove('section-flash');
+  void target.offsetWidth;
+  target.classList.add('section-flash');
+  target.addEventListener('animationend', () => target.classList.remove('section-flash'), { once: true });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const id = link.getAttribute('href').slice(1);
+    if (!id) return;
+    e.preventDefault();
+    scrollToSection(id);
+  });
+});
+</script>
+</body>
+</html>
