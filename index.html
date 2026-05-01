@@ -46,6 +46,17 @@
     text-decoration: none;
   }
   .nav-logo span { color: var(--gold-light); }
+  .nav-talent {
+    background: #c8903a;
+    color: var(--white);
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-talent:hover { background: #e0a84a; }
   .nav-cta {
     background: var(--gold);
     color: var(--white);
@@ -410,7 +421,10 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Gomes<span>Godin</span></a>
-  <a href="#contact" class="nav-cta">Get Started</a>
+  <div style="display:flex; gap:10px; align-items:center;">
+    <a href="https://gomesgodintalent.com/" target="_blank" rel="noopener" class="nav-talent">View Talent</a>
+    <a href="#contact" class="nav-cta">Get Started</a>
+  </div>
 </nav>
 
 <!-- HERO -->
